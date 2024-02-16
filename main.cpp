@@ -4,11 +4,11 @@
 #include <tuple>
 #include <string>
 #include <memory>
-#include "gui/gui.h"
-#include "mylibraries/func.h"
-#include "mylibraries/chrono.h"
-#include "mylibraries/encoding.h"
-#include "mylibraries/positioning.h"
+#include "myframework/gui.h"
+#include "myframework/utils/func.h"
+#include "myframework/utils/chrono.h"
+#include "myframework/utils/encoding.h"
+#include "myframework/utils/positioning.h"
 
 #include "include/menu.h"
 #include "include/files/files.h"
