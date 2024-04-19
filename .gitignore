@@ -1,4 +1,2 @@
-bin/
-obj/
-Fotoedit.depend
-Fotoedit.layout
+editor
+.vscode/

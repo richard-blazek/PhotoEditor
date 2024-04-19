@@ -8,7 +8,7 @@ private:
 	int menu_height;
 public:
 	Output(SDL::Point size, int menu_height)
-		:screen("", SDL::Rect(SDL::Window::UndefinedPos, size), SDL::Window::Flags::Maximized|SDL::Window::Flags::Borderless), rend(screen), menu_height(menu_height)
+		:screen("", SDL::Rect(40, 40, size), SDL::Window::Flags::Maximized|SDL::Window::Flags::Borderless), rend(screen), menu_height(menu_height)
 	{
 		rend.SetBlendMode(SDL::BlendMode::Blend);
 	}
@@ -32,6 +32,6 @@ public:
 	}
 	SelfDrawingImage MakeSDI(Image img)
 	{
-		return func::Move(SelfDrawingImage(func::Move(img), SDL::Rect(0, menu_height, ScreenSize()), rend));
+		return std::move(SelfDrawingImage(std::move(img), SDL::Rect(0, menu_height, ScreenSize()), rend));
 	}
 };

@@ -12,9 +12,9 @@ public:
 	}
 	SelfDrawingImage Set(const ActiveTool& init, SelfDrawingImage image)
 	{
-		image=tool->Disable(func::Move(image));
+		image=tool->Disable(std::move(image));
 		tool=init.tool;
-		image=tool->Enable(func::Move(image));
+		image=tool->Enable(std::move(image));
 		return image;
 	}
 };

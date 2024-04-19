@@ -3,35 +3,48 @@
 class ImagePath
 {
 private:
-	std::vector<Path> dir;
+	std::vector<fs::path> dir;
 	size_t file;
 public:
-	ImagePath(Path path):dir(), file(0)
+	static bool IsJpg(fs::path p)
 	{
-		auto all_files=path.Parent().FilesInDirectory();
-		std::copy_if(all_files.begin(), all_files.end(), back_inserter(dir), [](auto file)
+		auto e = p.extension().string();
+		return e==".jpg"||e==".JPG"||e==".jpeg"||e==".JPEG";
+	}
+	static bool IsPng(fs::path p)
+	{
+		auto e = p.extension().string();
+		return e==".png"||e==".PNG";
+	}
+	static bool IsBmp(fs::path p)
+	{
+		auto e = p.extension().string();
+		return e==".bmp"||e==".BMP";
+	}
+	static bool IsImg(fs::path p)
+	{
+		return IsJpg(p) || IsPng(p) || IsBmp(p);
+	}
+	ImagePath(fs::path path):dir(), file(0)
+	{
+		for (auto& entry : fs::directory_iterator(path.parent_path()))
 		{
-			return file.IsImage();
-		});
-		file=std::find(dir.begin(), dir.end(), path)-dir.begin();
-		for(size_t i=0; i<dir.size(); ++i)
-		{
-			dir[i]=Path(ConvertDefaultWindowsEncodingToUtf8(dir[i]));
+			if (IsImg(entry.path()))
+			{
+				dir.push_back(entry.path());
+			}
 		}
+		file = std::find(dir.begin(), dir.end(), path) - dir.begin();
 	}
-	operator Path()const
+	std::string String()const
 	{
-		return dir[file];
+		return dir[file].string();
 	}
-	operator std::string()const
-	{
-		return std::string(dir[file]);
-	}
-	ImagePath AnotherImage(int32 change)const
+	ImagePath AnotherImage(int change)const
 	{
 		auto result=*this;
 		result.file=(dir.size()+file+change)%dir.size();
-		return func::Move(result);
+		return std::move(result);
 	}
 	void Delete()
 	{

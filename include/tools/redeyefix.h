@@ -15,7 +15,7 @@ protected:
 		{
 			image.Draw(which, SDL::Color(80,80,80));
 		}
-		return func::Move(image);
+		return std::move(image);
 	};
 public:
 	using Ironing::Ironing;
@@ -23,17 +23,17 @@ public:
 	{
 		if(SDL::Cursor::IsPressed())
 		{
-			image=func::Move(ChangeArea(func::Move(image), ChangePixel));
-			image.Image().Confirm();
-			image=func::Move(ChangeArea(func::Move(image), Ironing::ChangePixel));
+			image=std::move(ChangeArea(std::move(image), ChangePixel));
+			image.GetImage().Confirm();
+			image=std::move(ChangeArea(std::move(image), Ironing::ChangePixel));
 			active=false;
 		}
-		return func::Move(image);
+		return std::move(image);
 	}
 	virtual SelfDrawingImage Enable(SelfDrawingImage image)override
 	{
 		active=true;
-		return Ironing::Enable(func::Move(image));
+		return Ironing::Enable(std::move(image));
 	}
 	virtual bool Again()const override
 	{

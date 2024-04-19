@@ -10,18 +10,18 @@ public:
 	}
 	virtual SelfDrawingImage Enable(SelfDrawingImage image)override
 	{
-		image.Image().Resize(~image.Image().Size());
-		for(int y=0; y<image.Image().Size().y; ++y)
+		image.GetImage().Resize(~image.GetImage().Size());
+		for(int y=0; y<image.GetImage().Size().y; ++y)
 		{
-			for(int x=0; x<image.Image().Size().x; ++x)
+			for(int x=0; x<image.GetImage().Size().x; ++x)
 			{
-				image.Image().Draw(SDL::Point(image.Image().Size().y-y-1, x), image.Image()[SDL::Point(x, y)]);
+				image.GetImage().Draw(SDL::Point(image.GetImage().Size().y-y-1, x), image.GetImage()[SDL::Point(x, y)]);
 			}
 		}
-		image.Image().Confirm();
-		image.AreaChanged(image.Image().Size());
-		image.Positioning().ResizeObject(image.Image().Size());
-		return func::Move(image);
+		image.GetImage().Confirm();
+		image.AreaChanged(image.GetImage().Size());
+		image.Position().ResizeObject(image.GetImage().Size());
+		return std::move(image);
 	}
 	virtual bool Again()const override
 	{

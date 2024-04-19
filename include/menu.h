@@ -5,7 +5,7 @@ class Menu
 private:
 	std::vector<std::string> buttons;
 public:
-	Menu(std::vector<std::string> buttons):buttons(func::Move(buttons)) {}
+	Menu(std::vector<std::string> buttons):buttons(std::move(buttons)) {}
 	void DrawOn(SDL::Renderer& rend, SDL::Rect area, SDL::Font& font, SDL::Color text_color, int separator_h, SDL::Color separator_color)const
 	{
 		for(size_t i=0; i<buttons.size(); ++i)

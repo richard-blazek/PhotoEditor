@@ -1,6 +1,6 @@
 #pragma once
 
-#include <dirent.h>
+#include <filesystem>
+namespace fs = std::filesystem;
 
-#include "path.h"
 #include "image_path.h"

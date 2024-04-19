@@ -5,24 +5,24 @@ class SelfDrawingImage: public NonCopyable
 private:
 	Image image;
 	ChangedArea area;
-	Positioning<int32, float> pos;
+	Positioning<int, float> pos;
 	SDL::Texture texture;
 	void UpdateImage(SDL::Renderer& rend)
 	{
 		image.Convert(texture.Format());
-		texture=image.Update(func::Move(texture), rend, area.Area());
+		texture=image.Update(std::move(texture), rend, area.Area());
 	}
 public:
 	SelfDrawingImage(Image img, SDL::Rect screen_area, SDL::Renderer& rend)
-		:image(func::Move(img)), area(), pos(image.Size(), screen_area), texture(image.MakeTexture(rend)) {}
+		:image(std::move(img)), area(), pos(image.Size(), screen_area), texture(image.MakeTexture(rend)) {}
 	SelfDrawingImage(SelfDrawingImage&& init)
-		:image(func::Move(init.image)), area(init.area), pos(func::Move(init.pos)), texture(func::Move(init.texture)) {}
+		:image(std::move(init.image)), area(init.area), pos(std::move(init.pos)), texture(std::move(init.texture)) {}
 	SelfDrawingImage& operator=(SelfDrawingImage&& init)
 	{
-		image=func::Move(init.image);
+		image=std::move(init.image);
 		area=init.area;
-		pos=func::Move(init.pos);
-		texture=func::Move(init.texture);
+		pos=std::move(init.pos);
+		texture=std::move(init.texture);
 		return *this;
 	}
 	void DrawOn(SDL::Renderer& rend)
@@ -31,11 +31,11 @@ public:
 		area.Clear();
 		rend.Draw(texture, texture.Size(), pos.ObjectArea());
 	}
-	Positioning<int32, float>& Positioning()
+	Positioning<int, float>& Position()
 	{
 		return pos;
 	}
-	Image& Image()
+	Image& GetImage()
 	{
 		return image;
 	}

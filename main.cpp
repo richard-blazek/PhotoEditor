@@ -5,9 +5,7 @@
 #include <string>
 #include <memory>
 #include "myframework/gui.h"
-#include "myframework/utils/func.h"
 #include "myframework/utils/chrono.h"
-#include "myframework/utils/encoding.h"
 #include "myframework/utils/positioning.h"
 
 #include "include/menu.h"
@@ -35,16 +33,17 @@
 
 using namespace std::chrono;
 
-void Main(Path program, Path src)
+void Main(fs::path src)
 {
-	gui::Init i(program.Parent()/"font.ttf", 16);
-	SDL::Font menu_font(program.Parent()/"font.ttf", 32);
+	gui::Init i("font.ttf", 16);
+	SDL::Font menu_font("font.ttf", 32);
 	Loader load(src);
 	Menu menu({"Upravit", "Zpět", "Uložit", "Smazat", "Zavřít"});
 	Output out(SDL::Point(900,650), menu_font.TextSize("").y+10);
 	auto sdi=out.MakeSDI(load.Load());
 	Actions options={
-		new Nothing(), new Cropping(), new Turn(), new Text(i, program.Parent()/"font.ttf"), new RedEyeFix(), new Ironing(), new Tilting()
+		new Nothing(), new Cropping(), new Turn(), new Text(i, "font.ttf"),
+		new RedEyeFix(), new Ironing(), new Tilting()
 	};
 	LoopTime loop;
 	bool repeat=true;
@@ -54,7 +53,7 @@ void Main(Path program, Path src)
 		{
 			if(evt.Type()==SDL::events::Type::WindowSizeChanged)
 			{
-				sdi.Positioning().ResizeArea(out.ScreenSize());
+				sdi.Position().ResizeArea(out.ScreenSize());
 			}
 			else if(evt.Type()==SDL::events::Type::Quit)
 			{
@@ -66,12 +65,12 @@ void Main(Path program, Path src)
 				if(key.Code==SDL::Scancode::Left)
 				{
 					load=load.Moved(-1);
-					sdi=options.Select(0, func::Move(out.MakeSDI(load.Load())));
+					sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
 				}
 				else if(key.Code==SDL::Scancode::Right)
 				{
 					load=load.Moved(1);
-					sdi=options.Select(0, func::Move(out.MakeSDI(load.Load())));
+					sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
 				}
 			}
 			else if(evt.Type()==SDL::events::Type::MouseButtonDown)
@@ -81,19 +80,19 @@ void Main(Path program, Path src)
 					switch(menu.ChosenButton(SDL::Rect(0,0, out.ScreenSize().x, out.MenuHeight()), evt.MouseButton().Position))
 					{
 					case 0:
-						sdi=options.Select(gui::DialogSelect(i, "Co chceš použít k úpravě obrázku?", options.Options()), func::Move(sdi));
+						sdi=options.Select(gui::DialogSelect(i, "Co chceš použít k úpravě obrázku?", options.Options()), std::move(sdi));
 						break;
 					case 1:
-						sdi=options.Select(0, func::Move(out.MakeSDI(load.Load())));
+						sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
 						break;
 					case 2:
-						load.Save(sdi.Image());
+						load.Save(sdi.GetImage());
 						break;
 					case 3:
 						if(gui::DialogSelect(i, "Opravdu chceš smazat tento soubor?", {"Ano, smazat", "Ne, nemazat"})==0)
 						{
 							load.Delete();
-							sdi=options.Select(0, func::Move(out.MakeSDI(load.Load())));
+							sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
 						}
 						break;
 					case 4:
@@ -107,12 +106,12 @@ void Main(Path program, Path src)
 					repeat=false;
 				}
 			}
-			sdi=options->Reaction(func::Move(sdi), func::Move(evt));
+			sdi=options->Reaction(std::move(sdi), std::move(evt));
 		}
-		sdi=options->Action(func::Move(sdi));
+		sdi=options->Action(std::move(sdi));
 		if(!options->Again())
 		{
-			sdi=options.Select(0, func::Move(sdi));
+			sdi=options.Select(0, std::move(sdi));
 		}
 		out.Draw(sdi, options, menu, menu_font);
 		loop.NextLoop(30ms);
@@ -125,7 +124,7 @@ int main(int argc, const char* argv[])try
 		SDL::MessageBox::Show("Error", "No file");
 		return 0;
 	}
-	Main(Path(argv[0]), Path(argv[1]));
+	Main(fs::absolute(fs::path(std::string(argv[1]))));
 	return 0;
 }
 catch(std::exception& exc)

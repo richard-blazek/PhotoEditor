@@ -10,11 +10,11 @@ public:
 		:tools(init), tool(tools.Select(0)) {}
 	std::vector<std::string> Options()const
 	{
-		return func::Move(tools.Options());
+		return std::move(tools.Options());
 	}
     SelfDrawingImage Select(size_t i, SelfDrawingImage image)
     {
-    	return tool.Set(tools.Select(i), func::Move(image));
+    	return tool.Set(tools.Select(i), std::move(image));
     }
     Tool* operator->()
     {

@@ -14,8 +14,8 @@ public:
 	virtual SelfDrawingImage Enable(SelfDrawingImage image)override
 	{
 		active=true;
-		selection=image.Image().Size();
-		return func::Move(image);
+		selection=image.GetImage().Size();
+		return std::move(image);
 	}
 	virtual bool Again()const override
 	{
@@ -25,9 +25,9 @@ public:
 	{
 		if(SDL::Cursor::IsPressed(SDL::MouseButtonMask::Left))
 		{
-			auto cur_pos=image.Positioning().ToObject(SDL::Cursor::Position());
-			cur_pos.x=func::Limit(cur_pos.x, 0, image.Image().Size().x);
-			cur_pos.y=func::Limit(cur_pos.y, 0, image.Image().Size().y);
+			auto cur_pos=image.Position().ToObject(SDL::Cursor::Position());
+			cur_pos.x=std::min(std::max(cur_pos.x, 0), image.GetImage().Size().x);
+			cur_pos.y=std::min(std::max(cur_pos.y, 0), image.GetImage().Size().y);
             if(cur_pos.x<selection.Center().x)
 			{
 				selection.w-=(cur_pos.x-selection.x);
@@ -47,7 +47,7 @@ public:
 				selection.h=cur_pos.y-selection.y;
 			}
 		}
-		return func::Move(image);
+		return std::move(image);
 	}
 	virtual SelfDrawingImage Reaction(SelfDrawingImage image, const SDL::events::Event& evt)
 	{
@@ -55,30 +55,30 @@ public:
 		{
 			if(evt.Keyboard().Key==SDL::Keycode::Return)
 			{
-				image.Image().Resize(selection.Size());
+				image.GetImage().Resize(selection.Size());
 				for(size_t y=0; y<selection.h; ++y)
 				{
 					for(size_t x=0; x<selection.w; ++x)
 					{
-						image.Image().Draw(SDL::Point(x,y), image.Image()[selection.Position()+SDL::Point(x,y)]);
+						image.GetImage().Draw(SDL::Point(x,y), image.GetImage()[selection.Position()+SDL::Point(x,y)]);
 					}
 				}
-				image.Image().Confirm();
-				image.AreaChanged(image.Image().Size());
-				image.Positioning().ResizeObject(image.Image().Size());
-				selection=image.Image().Size();
+				image.GetImage().Confirm();
+				image.AreaChanged(image.GetImage().Size());
+				image.Position().ResizeObject(image.GetImage().Size());
+				selection=image.GetImage().Size();
 				active=false;
 			}
 
 		}
-		return func::Move(image);
+		return std::move(image);
 	}
 	virtual void DrawOn(SelfDrawingImage& image, SDL::Renderer& re)
 	{
-		re.Draw(image.Positioning().ToScreen(SDL::Rect(0,0, image.Image().Size().x, selection.y)), SDL::Color(0,0,0,100));
-		re.Draw(image.Positioning().ToScreen(SDL::Rect(0,0, selection.x, image.Image().Size().y)), SDL::Color(0,0,0,100));
+		re.Draw(image.Position().ToScreen(SDL::Rect(0,0, image.GetImage().Size().x, selection.y)), SDL::Color(0,0,0,100));
+		re.Draw(image.Position().ToScreen(SDL::Rect(0,0, selection.x, image.GetImage().Size().y)), SDL::Color(0,0,0,100));
 
-		re.Draw(image.Positioning().ToScreen(SDL::Rect(0, selection.Down(), image.Image().Size().x, image.Image().Size().y-selection.Down())), SDL::Color(0,0,0,100));
-		re.Draw(image.Positioning().ToScreen(SDL::Rect(selection.Right(), 0, image.Image().Size().x-selection.Right(), image.Image().Size().y)), SDL::Color(0,0,0,100));
+		re.Draw(image.Position().ToScreen(SDL::Rect(0, selection.Down(), image.GetImage().Size().x, image.GetImage().Size().y-selection.Down())), SDL::Color(0,0,0,100));
+		re.Draw(image.Position().ToScreen(SDL::Rect(selection.Right(), 0, image.GetImage().Size().x-selection.Right(), image.GetImage().Size().y)), SDL::Color(0,0,0,100));
 	}
 };

@@ -8,15 +8,15 @@ public:
 	Loader(ImagePath file) :file(file) {}
 	std::string Path()const
 	{
-		return std::string(file);
+		return file.String();
 	}
-	Loader Moved(int32 change)const
+	Loader Moved(int change)const
     {
     	return Loader(file.AnotherImage(change));
     }
 	void Save(Image& images)const
 	{
-		images.Save(file);
+		images.Save(file.String());
 	}
 	void Delete()
 	{
@@ -24,6 +24,6 @@ public:
 	}
 	Image Load()const
 	{
-		return func::Move(Image(SDL::Surface::LoadImg(std::string(file))));
+		return std::move(Image(SDL::Surface::LoadImg(file.String())));
 	}
 };

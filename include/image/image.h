@@ -6,11 +6,11 @@ private:
 	SDL::Surface source, result;
 public:
 	Image(SDL::Surface image):source(image), result(image) {}
-	Image(Image&& src):source(func::Move(src.source)), result(source) {}
+	Image(Image&& src):source(std::move(src.source)), result(source) {}
 	Image& operator=(Image&& src)
 	{
-		source=func::Move(src.source);
-		result=func::Move(src.result);
+		source=std::move(src.source);
+		result=std::move(src.result);
 		return *this;
 	}
 	SDL::Color operator[](SDL::Point xy)const
@@ -32,29 +32,29 @@ public:
     }
 	void Resize(SDL::Point size)
 	{
-		result=func::Move(source.Format().IsIndexed()?
+		result=std::move(source.Format().IsIndexed()?
 				SDL::Surface(size, source.Palette(), source.Format()):
 				SDL::Surface(size, source.Format())
 		);
 	}
 	SDL::Texture Update(SDL::Texture texture, SDL::Renderer& rend, SDL::Rect area)
 	{
-		return UpdateTexture(func::Move(texture), result, rend, area);
+		return UpdateTexture(std::move(texture), result, rend, area);
 	}
 	void Convert(SDL::Pixel::Format format)
 	{
 		if(result.Format()!=format)
 		{
-			result=func::Move(result.Convert(format));
+			result=std::move(result.Convert(format));
 		}
 	}
-	void Save(Path file)
+	void Save(fs::path file)
 	{
-		if(file.IsJpg())
+		if(ImagePath::IsJpg(file))
 		{
 			source.SaveAsJPG(file, 95);
 		}
-		else if(file.IsBmp())
+		else if(ImagePath::IsBmp(file))
 		{
 			source.SaveAsBMP(file);
 		}

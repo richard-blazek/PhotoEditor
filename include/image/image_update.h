@@ -15,5 +15,5 @@ SDL::Texture UpdateTexture(SDL::Texture src, const SDL::Surface& img, SDL::Rende
 	{
 		src.Update(img, where);
 	}
-	return func::Move(src);
+	return std::move(src);
 }

@@ -13,7 +13,7 @@ public:
 		{
 			opt.push_back(tool->Name());
 		}
-		return func::Move(opt);
+		return std::move(opt);
 	}
 	ActiveTool Select(size_t i)
 	{
