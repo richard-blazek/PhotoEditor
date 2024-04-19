@@ -7,8 +7,6 @@ private:
 	SDL_Window* window=nullptr;
 public:
 	friend Renderer;
-	friend void MessageBox::Show(const std::string&, const std::string&, Flags flag, Window*);
-	friend size_t MessageBox::Dialog(const std::string&, const std::string&, const std::vector<std::string>&, size_t, size_t, Flags, ColorScheme*, Window*);
 	friend Cursor;
 	enum class Flags:uint32
 	{

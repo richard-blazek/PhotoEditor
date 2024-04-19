@@ -1,8 +1,6 @@
 #pragma once
 
-using ColorRGB=colors::RGB;
-using ColorRGBA=colors::RGBA;
-using Color=ColorRGBA;
+using Color=colors::RGBA;
 
 namespace Pixel
 {

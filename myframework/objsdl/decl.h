@@ -20,5 +20,5 @@ class Window;
 
 void Error::Show()const
 {
-	MessageBox::Show("SDL-Error", message, MessageBox::Flags::Error);
+	Message("SDL-Error", message);
 }

@@ -121,7 +121,7 @@ int main(int argc, const char* argv[])try
 {
 	if(argc<2)
 	{
-		SDL::MessageBox::Show("Error", "No file");
+		SDL::Message("Error", "No file");
 		return 0;
 	}
 	Main(fs::absolute(fs::path(std::string(argv[1]))));
@@ -129,5 +129,5 @@ int main(int argc, const char* argv[])try
 }
 catch(std::exception& exc)
 {
-	SDL::MessageBox::Show("Chyba", "Stala se nějaká chyba. \n\nChybová hláška: '"+std::string(exc.what())+"'");
+	SDL::Message("Chyba", "Stala se nějaká chyba. \n\nChybová hláška: '"+std::string(exc.what())+"'");
 }

@@ -143,7 +143,7 @@ private:
 		EraseSelection();
 		if(text.size()+inserted.size()>1000)
 		{
-			SDL::MessageBox::Show("Warning", "Too long", SDL::MessageBox::Flags::Warning);
+			SDL::Message("Warning", "Too long");
 			return;
 		}
 		text.insert(cursor, inserted);

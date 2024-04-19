@@ -40,18 +40,9 @@ void Surface::DisableColorKey(const Color& col)
 {
 	Error::IfNegative(SDL_SetColorKey(surface, false, SDL_MapRGBA(surface->format, col.r, col.g, col.b, col.a)));
 }
-void Surface::SetRGBMod(const ColorRGB& col)
-{
-	Error::IfNegative(SDL_SetSurfaceColorMod(surface, col.r, col.g, col.b));
-}
 void Surface::SetAlphaMod(uint8 alpha)
 {
 	Error::IfNegative(SDL_SetSurfaceAlphaMod(surface, alpha));
-}
-void Surface::SetRGBAMod(const Color& col)
-{
-	SetRGBMod(col);
-	SetAlphaMod(col.a);
 }
 bool Surface::MustLock()const noexcept
 {

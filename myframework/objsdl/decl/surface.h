@@ -277,9 +277,7 @@ public:
     void Draw(Surface&, Rect, Rect);
     void EnableColorKey(const Color& col);
     void DisableColorKey(const Color& col);
-    void SetRGBMod(const ColorRGB& col);
     void SetAlphaMod(uint8 alpha);
-    void SetRGBAMod(const Color& col);
     void SetBlendMode(BlendMode mode);
     bool MustLock()const noexcept;
     void Lock();

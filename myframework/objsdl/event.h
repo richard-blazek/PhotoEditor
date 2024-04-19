@@ -12,12 +12,6 @@ private:
 	Event(const SDL_Event& evt):event(evt){}
 public:
 	friend class Iterator;
-	enum class Action: uint8
-	{
-		Add=SDL_ADDEVENT,
-		Peek=SDL_PEEKEVENT,
-		Get=SDL_GETEVENT
-	};
 	Event()noexcept=default;
 	events::MouseWheel MouseWheel()const
 	{

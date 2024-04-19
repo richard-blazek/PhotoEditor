@@ -12,39 +12,14 @@ namespace Cursor
 	{
 		SDL_ShowCursor(1);
 	}
-	//Je kurzor vidět?
-	bool IsVisible()noexcept
-	{
-		return SDL_ShowCursor(-1);
-	}
 	void Move(Point xy)noexcept
 	{
         Error::Condition(SDL_WarpMouseGlobal(xy.x, xy.y)<0);
-	}
-	void EnableCapturing()
-	{
-		Error::IfNegative(SDL_CaptureMouse(SDL_TRUE));
-	}
-	void DisableCapturing()
-	{
-		Error::IfNegative(SDL_CaptureMouse(SDL_FALSE));
 	}
 	Point Position()
 	{
 		Point result;
 		SDL_GetMouseState(&result.x, &result.y);
-		return result;
-	}
-	Point GlobalPosition()
-	{
-		Point result;
-		SDL_GetGlobalMouseState(&result.x, &result.y);
-		return result;
-	}
-	Point RelativePosition()
-	{
-		Point result;
-		SDL_GetRelativeMouseState(&result.x, &result.y);
 		return result;
 	}
 	MouseButtonMask PressedButtons()
