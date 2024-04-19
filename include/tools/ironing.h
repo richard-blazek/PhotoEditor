@@ -5,10 +5,10 @@ class Ironing: public AreaChanging
 private:
 	SDL::Color AvgArea(const Image& image, SDL::Rect area)const
 	{
-		uint32 r=0, g=0, b=0, count=0;
-		for(uint16 y=std::max(0, area.y), stop_y=std::min(image.Size().y, area.Down()); y<stop_y; ++y)
+		int r=0, g=0, b=0, count=0;
+		for(int y=std::max(0, area.y), stop_y=std::min(image.Size().y, area.Down()); y<stop_y; ++y)
 		{
-			for(uint16 x=std::max(0, area.x), stop_x=std::min(area.Right(), image.Size().x); x<stop_x; ++x)
+			for(int x=std::max(0, area.x), stop_x=std::min(area.Right(), image.Size().x); x<stop_x; ++x)
 			{
 				r+=image[SDL::Point(x,y)].r;
 				g+=image[SDL::Point(x,y)].g;
@@ -18,10 +18,10 @@ private:
 		}
 		return SDL::Color(r/count, g/count, b/count);
 	}
-	SDL::Color MultiAvgArea(const Image& image, SDL::Point center, uint32 size)const
+	SDL::Color MultiAvgArea(const Image& image, SDL::Point center, int size)const
 	{
-        uint32 r=0, g=0, b=0;
-        for(uint16 i=0; i<size; ++i)
+        int r=0, g=0, b=0;
+        for(int i=0; i<size; ++i)
 		{
 			auto col=AvgArea(image, SDL::Rect(center-SDL::Point(i,i), i*2+1, i*2+1));
 			r+=col.r;

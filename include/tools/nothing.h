@@ -12,11 +12,11 @@ public:
 	{
 		if(evt.Type()==SDL::events::Type::MouseMotion&&(SDL::Cursor::PressedButtons()&SDL::MouseButtonMask::Left)!=SDL::MouseButtonMask::Nothing)
 		{
-			image.Position().Displace(evt.MouseMotion().Relative);
+			image.Position().Displace(evt.MouseMotion());
 		}
 		else if(evt.Type()==SDL::events::Type::MouseWheel)
 		{
-			image.Position().ChangeZoom(evt.MouseWheel().Move.y>0?1.2:1.0/1.2, SDL::Cursor::Position(), 0.1, 80.0);
+			image.Position().ChangeZoom(evt.MouseWheel()>0?1.2:1.0/1.2, SDL::Cursor::Position(), 0.1, 80.0);
 		}
 		return std::move(image);
 	}

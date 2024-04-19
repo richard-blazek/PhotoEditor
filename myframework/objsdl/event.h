@@ -1,7 +1,6 @@
 #pragma once
 
 #include "events/type.h"
-#include "events/structures.h"
 
 namespace events
 {
@@ -13,21 +12,21 @@ private:
 public:
 	friend class Iterator;
 	Event()noexcept=default;
-	events::MouseWheel MouseWheel()const
+	int MouseWheel()const
 	{
-		return events::MouseWheel{Point(event.wheel.x, event.wheel.y)* (event.wheel.direction==SDL_MOUSEWHEEL_FLIPPED?-1:1)};
+		return event.wheel.y * (event.wheel.direction==SDL_MOUSEWHEEL_FLIPPED?-1:1);
 	}
-	events::MouseMotion MouseMotion()const
+	Point MouseMotion()const
 	{
-		return events::MouseMotion{Point(event.motion.xrel, event.motion.yrel)};
+		return Point(event.motion.xrel, event.motion.yrel);
 	}
-	events::MouseButton MouseButton()const
+	Point MouseButton()const
 	{
-		return events::MouseButton{Point(event.button.x, event.button.y)};
+		return Point(event.button.x, event.button.y);
 	}
-	events::Keyboard Keyboard()const
+	Keycode Keyboard()const
 	{
-		return events::Keyboard{Keycode(event.key.keysym.sym)};
+		return Keycode(event.key.keysym.sym);
 	}
 	events::Type Type()const noexcept
 	{

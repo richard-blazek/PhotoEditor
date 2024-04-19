@@ -53,7 +53,7 @@ public:
 	{
 		if(evt.Type()==SDL::events::Type::Keydown)
 		{
-			if(evt.Keyboard().Key==SDL::Keycode::Return)
+			if(evt.Keyboard()==SDL::Keycode::Return)
 			{
 				image.GetImage().Resize(selection.Size());
 				for(size_t y=0; y<selection.h; ++y)

@@ -61,12 +61,12 @@ void Main(fs::path src)
 			else if(evt.Type()==SDL::events::Type::Keydown)
 			{
 				auto key=evt.Keyboard();
-				if(key.Key==SDL::Keycode::Left)
+				if(key==SDL::Keycode::Left)
 				{
 					load=load.Moved(-1);
 					sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
 				}
-				else if(key.Key==SDL::Keycode::Right)
+				else if(key==SDL::Keycode::Right)
 				{
 					load=load.Moved(1);
 					sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
@@ -76,7 +76,7 @@ void Main(fs::path src)
 			{
 				try
 				{
-					switch(menu.ChosenButton(SDL::Rect(0,0, out.ScreenSize().x, out.MenuHeight()), evt.MouseButton().Position))
+					switch(menu.ChosenButton(SDL::Rect(0,0, out.ScreenSize().x, out.MenuHeight()), evt.MouseButton()))
 					{
 					case 0:
 						sdi=options.Select(out.Dialog("Co chceš použít k úpravě obrázku?", options.Options()), std::move(sdi));

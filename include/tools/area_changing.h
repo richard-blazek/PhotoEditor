@@ -3,14 +3,14 @@
 class AreaChanging: public Tool
 {
 private:
-    uint32 size=40;
+    int size=40;
 protected:
 	SelfDrawingImage ChangeArea(SelfDrawingImage image, std::function<Image(Image, SDL::Point)> changer)
 	{
 		auto where=SDL::Rect(image.Position().ToObject(SDL::Cursor::Position())-SDL::Point(size, size), size*2, size*2);
-		for(uint16 y=std::max(0, where.y); y<where.Down()&&y<image.GetImage().Size().y;++y)
+		for(int y=std::max(0, where.y); y<where.Down()&&y<image.GetImage().Size().y;++y)
 		{
-			for(uint16 x=std::max(0, where.x); x<where.Right()&&x<image.GetImage().Size().x;++x)
+			for(int x=std::max(0, where.x); x<where.Right()&&x<image.GetImage().Size().x;++x)
 			{
 				image.GetImage()=std::move(changer(std::move(image.GetImage()), SDL::Point(x,y)));
 			}
@@ -41,9 +41,9 @@ public:
 		{
 			image.GetImage().Confirm();
 		}
-		else if(evt.Type()==SDL::events::Type::MouseWheel&&-evt.MouseWheel().Move.y<int(size))
+		else if(evt.Type()==SDL::events::Type::MouseWheel&&-evt.MouseWheel()<size)
 		{
-			size+=evt.MouseWheel().Move.y;
+			size+=evt.MouseWheel();
 		}
 		return std::move(image);
 	}
