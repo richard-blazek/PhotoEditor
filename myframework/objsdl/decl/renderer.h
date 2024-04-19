@@ -59,11 +59,6 @@ public:
 		SetDrawColor(col);
 		Error::IfNegative(SDL_RenderDrawPoint(renderer, point.x, point.y));
 	}
-	void Draw(const Line& line, const Color& col)
-	{
-		SetDrawColor(col);
-		Error::IfNegative(SDL_RenderDrawLine(renderer, line.begin.x,line.begin.y, line.end.x,line.end.y));
-	}
 	void DrawBorder(const Rect& rectangle, const Color& col)
 	{
 		SetDrawColor(col);

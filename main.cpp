@@ -5,7 +5,6 @@
 #include <string>
 #include <memory>
 #include "myframework/objsdl.h"
-#include "myframework/utils/chrono.h"
 #include "myframework/utils/positioning.h"
 
 #include "include/menu.h"
@@ -30,8 +29,6 @@
 #include "include/loader.h"
 #include "include/output.h"
 
-using namespace std::chrono;
-
 void Main(fs::path src)
 {
 	SDL::Init _;
@@ -44,7 +41,6 @@ void Main(fs::path src)
 		new Nothing(), new Cropping(), new Turn(),
 		new RedEyeFix(), new Ironing(), new Tilting()
 	};
-	LoopTime loop;
 	bool repeat=true;
 	while(repeat)
 	{
@@ -113,7 +109,7 @@ void Main(fs::path src)
 			sdi=options.Select(0, std::move(sdi));
 		}
 		out.Draw(sdi, options, menu, menu_font);
-		loop.NextLoop(30ms);
+		SDL::Wait(20);
 	}
 }
 int main(int argc, const char* argv[])try

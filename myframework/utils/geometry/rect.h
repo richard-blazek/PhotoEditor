@@ -2,7 +2,6 @@
 
 #include "base.h"
 #include "point.h"
-#include "line.h"
 
 namespace geometry
 {

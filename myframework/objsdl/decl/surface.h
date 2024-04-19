@@ -233,7 +233,6 @@ public:
 	{
 		SetPixelRawValue(xy, SDL_MapRGBA(surface->format, col.r, col.g, col.b, col.a));
 	}
-    void Draw(const Line& line, const Color& col);
     void DrawBorder(const Rect& rectangle, const Color& col);
     void Draw(const Rect& rectangle, const Color& col);
     uint32 BytesPerLine()const noexcept
