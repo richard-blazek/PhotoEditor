@@ -4,7 +4,7 @@
 #include <tuple>
 #include <string>
 #include <memory>
-#include "myframework/gui.h"
+#include "myframework/objsdl.h"
 #include "myframework/utils/chrono.h"
 #include "myframework/utils/positioning.h"
 
@@ -22,7 +22,6 @@
 #include "include/tools/tilting.h"
 #include "include/tools/turn.h"
 #include "include/tools/cropping.h"
-#include "include/tools/text.h"
 #include "include/tools/redeyefix.h"
 
 #include "include/toolload/activetool.h"
@@ -35,14 +34,14 @@ using namespace std::chrono;
 
 void Main(fs::path src)
 {
-	gui::Init i("font.ttf", 16);
+	SDL::Init _;
 	SDL::Font menu_font("font.ttf", 32);
 	Loader load(src);
 	Menu menu({"Upravit", "Zpět", "Uložit", "Smazat", "Zavřít"});
 	Output out(SDL::Point(900,650), menu_font.TextSize("").y+10);
 	auto sdi=out.MakeSDI(load.Load());
 	Actions options={
-		new Nothing(), new Cropping(), new Turn(), new Text(i, "font.ttf"),
+		new Nothing(), new Cropping(), new Turn(),
 		new RedEyeFix(), new Ironing(), new Tilting()
 	};
 	LoopTime loop;
@@ -80,7 +79,7 @@ void Main(fs::path src)
 					switch(menu.ChosenButton(SDL::Rect(0,0, out.ScreenSize().x, out.MenuHeight()), evt.MouseButton().Position))
 					{
 					case 0:
-						sdi=options.Select(gui::DialogSelect(i, "Co chceš použít k úpravě obrázku?", options.Options()), std::move(sdi));
+						sdi=options.Select(out.Dialog("Co chceš použít k úpravě obrázku?", options.Options()), std::move(sdi));
 						break;
 					case 1:
 						sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
@@ -89,7 +88,7 @@ void Main(fs::path src)
 						load.Save(sdi.GetImage());
 						break;
 					case 3:
-						if(gui::DialogSelect(i, "Opravdu chceš smazat tento soubor?", {"Ano, smazat", "Ne, nemazat"})==0)
+						if(out.Dialog("Opravdu chceš smazat tento soubor?", {"Ano, smazat", "Ne, nemazat"})==0)
 						{
 							load.Delete();
 							sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
@@ -102,7 +101,7 @@ void Main(fs::path src)
 				}
 				catch(SDL::Error& err)
 				{
-					gui::DialogSelect(i, "Jejda! Při otevírání souboru "+load.Path().substr(load.Path().find_last_of("/\\")+1)+" se něco pokazilo.", {"Ukončit program"}, 800);
+					SDL::Message("Chyba programy", "Jejda! Při otevírání souboru "+load.Path().substr(load.Path().find_last_of("/\\")+1)+" se něco pokazilo.");
 					repeat=false;
 				}
 			}
