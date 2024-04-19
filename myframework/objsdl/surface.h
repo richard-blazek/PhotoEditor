@@ -10,10 +10,6 @@ Surface::Surface(Point size, const std::vector<Color>& colors, Pixel::Format for
     surface=Error::IfZero(SDL_CreateRGBSurfaceWithFormat(0,size.x,size.y, format.BitsPexPixel(), uint32(format)));
 	SetPalette(colors);
 }
-Surface::Surface(Point size, uint8 depth, ColorMasks masks)
-{
-    surface=Error::IfZero(SDL_CreateRGBSurface(0,size.x,size.y,depth, BE_ToNative(masks.r), BE_ToNative(masks.g), BE_ToNative(masks.b), BE_ToNative(masks.a)));
-}
 Surface::Surface(Point size, Pixel::Format format)
 {
 	if(format.IsIndexed())
@@ -31,43 +27,6 @@ void Surface::Draw(Surface& second, Rect source, Rect destination)
 {
 	SDL_Rect src=Surface::RectSDL(source), dst=Surface::RectSDL(destination);
     Error::IfNegative(SDL_BlitScaled(second.surface, &src, surface, &dst));
-}
-void Surface::EnableColorKey(const Color& col)
-{
-	Error::IfNegative(SDL_SetColorKey(surface, true, SDL_MapRGBA(surface->format, col.r, col.g, col.b, col.a)));
-}
-void Surface::DisableColorKey(const Color& col)
-{
-	Error::IfNegative(SDL_SetColorKey(surface, false, SDL_MapRGBA(surface->format, col.r, col.g, col.b, col.a)));
-}
-void Surface::SetAlphaMod(uint8 alpha)
-{
-	Error::IfNegative(SDL_SetSurfaceAlphaMod(surface, alpha));
-}
-bool Surface::MustLock()const noexcept
-{
-	return SDL_MUSTLOCK(surface);
-}
-
-void Surface::Lock()
-{
-	Error::IfNegative(SDL_LockSurface(surface));
-}
-void Surface::Unlock()noexcept
-{
-	SDL_UnlockSurface(surface);
-}
-void Surface::EnableRLE()
-{
-    Error::IfNegative(SDL_SetSurfaceRLE(surface, true));
-}
-void Surface::DisableRLE()
-{
-    Error::IfNegative(SDL_SetSurfaceRLE(surface, false));
-}
-void Surface::SetBlendMode(BlendMode mode)
-{
-    Error::IfNegative(SDL_SetSurfaceBlendMode(surface, SDL_BlendMode(mode)));
 }
 void Surface::Repaint(const Color& col)
 {

@@ -10,7 +10,6 @@ class Display;
 class Window;
 
 #include "decl/messagebox.h"
-#include "decl/textinput.h"
 #include "decl/drawbase.h"
 #include "decl/surface.h"
 #include "decl/texture.h"

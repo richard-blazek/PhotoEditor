@@ -37,19 +37,4 @@ public:
 		return size;
 	}
 };
-class KeymodState
-{
-private:
-	Keymod mod_state;
-public:
-	KeymodState()noexcept
-		:mod_state(Keymod(SDL_GetModState())) {}
-	void Refresh()noexcept
-	{
-		mod_state=Keymod(SDL_GetModState());
-	}
-	bool IsPressed(Keymod modifier)noexcept
-	{
-		return bool(int(mod_state)&int(modifier));
-	}
-};
+

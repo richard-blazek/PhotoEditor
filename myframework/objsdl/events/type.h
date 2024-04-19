@@ -27,18 +27,11 @@ enum class Type:uint32
 	//Keyboard events
 	Keydown=SDL_KEYDOWN,			//Key pressed
 	Keyup,					//Key released
-	TextEditing,			//Keyboard text editing (composition)
-	TextInput,		        //Keyboard text input
-	KeyMapChanged=SDL_KEYMAPCHANGED,
 
 	//Mouse events
 	MouseMotion=SDL_MOUSEMOTION,		//Mouse moved
 	MouseButtonDown,		//Mouse button pressed
 	MouseButtonUp,			//Mouse button released
 	MouseWheel,				//Mouse wheel motion
-
-	//Clipboard events
-	ClipboardUpdate=SDL_CLIPBOARDUPDATE,		//The clipboard changed
-
 };
 }

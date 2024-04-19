@@ -17,7 +17,6 @@ private:
 	friend Renderer;
 	friend Cursor;
 	friend Font;
-	friend void TextInput::SetCandidateListArea(const Rect& area);
     SDL_Surface* surface=nullptr;
     static inline uint32 BE_ToNative(uint32 num)
 	{
@@ -41,10 +40,6 @@ private:
 		return Rect(r.x, r.y, r.w, r.h);
 	}
 public:
-	struct ColorMasks
-	{
-		uint32 r, g, b, a;
-	};
     Surface()=default;
     void Close()
 	{
@@ -60,13 +55,7 @@ public:
 	}
     Surface(Point size, const std::vector<Color>& colors, uint8 depth);
     Surface(Point size, const std::vector<Color>& colors, Pixel::Format format);
-    Surface(Point size, uint8 depth, ColorMasks masks);
     Surface(Point size, Pixel::Format format);
-
-    bool IsOpened()const noexcept
-    {
-    	return bool(surface);
-    }
 
     Surface(const Surface& init)
 		:surface(Error::IfZero(SDL_DuplicateSurface(init.surface))) {}
@@ -91,10 +80,6 @@ public:
 	static Surface LoadImg(const std::string& file)
 	{
 		return std::move(Surface(Error::IfZero(IMG_Load(file.c_str()))));
-	}
-	static Surface LoadXPM(char** xpm)
-	{
-		return std::move(Surface(Error::IfZero(IMG_ReadXPMFromArray(xpm))));
 	}
 	Surface Resized(SDL::Point size)
 	{
@@ -158,10 +143,6 @@ public:
 		{
 			surface->format->palette->colors[i]=ColorSDL(colors[i]);
 		}
-	}
-    ColorMasks Masks()const noexcept
-	{
-		return ColorMasks{surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask};
 	}
 	uint8* Index(const Point& xy)const noexcept
 	{
@@ -275,15 +256,6 @@ public:
 	}
     void Blit(Surface&, Rect, Rect);
     void Draw(Surface&, Rect, Rect);
-    void EnableColorKey(const Color& col);
-    void DisableColorKey(const Color& col);
-    void SetAlphaMod(uint8 alpha);
-    void SetBlendMode(BlendMode mode);
-    bool MustLock()const noexcept;
-    void Lock();
-    void Unlock()noexcept;
-    void EnableRLE();
-    void DisableRLE();
     Pixel::Format Format()const noexcept
 	{
         return Pixel::Format(surface->format->format);

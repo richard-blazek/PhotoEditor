@@ -35,6 +35,4 @@ namespace SDL
 #include "objsdl/renderer.h"
 #include "objsdl/cursor.h"
 #include "objsdl/messagebox.h"
-#include "objsdl/clipboard.h"
-#include "objsdl/textinput.h"
 }

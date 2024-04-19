@@ -37,7 +37,7 @@ public:
 	}
 	virtual SelfDrawingImage Reaction(SelfDrawingImage image, const SDL::events::Event& evt)override
 	{
-		if(evt.Type()==SDL::events::Type::MouseButtonUp&&evt.MouseButton().Button==SDL::MouseButton::Left&&!SDL::Cursor::IsPressed())
+		if(evt.Type()==SDL::events::Type::MouseButtonUp&&!SDL::Cursor::IsPressed())
 		{
 			image.GetImage().Confirm();
 		}

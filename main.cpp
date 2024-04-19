@@ -61,12 +61,12 @@ void Main(fs::path src)
 			else if(evt.Type()==SDL::events::Type::Keydown)
 			{
 				auto key=evt.Keyboard();
-				if(key.Code==SDL::Scancode::Left)
+				if(key.Key==SDL::Keycode::Left)
 				{
 					load=load.Moved(-1);
 					sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
 				}
-				else if(key.Code==SDL::Scancode::Right)
+				else if(key.Key==SDL::Keycode::Right)
 				{
 					load=load.Moved(1);
 					sdi=options.Select(0, std::move(out.MakeSDI(load.Load())));
